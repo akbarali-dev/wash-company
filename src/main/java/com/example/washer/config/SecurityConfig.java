@@ -75,7 +75,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("/api/super")
                 .hasRole("SUPER_ADMIN")
 
-                .mvcMatchers("/api/admin", "/api/changePassword", "/api/*/getJournals")
+                .mvcMatchers("/api/admin", "/api/changePassword", "/api/*/getJournals",
+                "/api/*/insertJournal/**", "/api/*/insertJournal", "/api/sendMessage"
+                )
                 .hasAnyRole("ADMIN", "SUPER_ADMIN")
 
                 .mvcMatchers("/api/user")

@@ -12,6 +12,10 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public interface OrderRepository extends BaseRepository<Order> {
+
+
+
+
     @Query(nativeQuery = true,
             value = "select cast(o.id as varchar),\n" +
                     "       o.car_model as carModel ,\n" +
@@ -30,6 +34,7 @@ public interface OrderRepository extends BaseRepository<Order> {
     Page<OrderProjection> getAllOrderByCompanyId(UUID washCompanyId, Pageable pageable, LocalDate dateFrom, LocalDate dateTo, boolean isActive);
 
     boolean existsById(UUID id);
+    boolean existsByIdAndWashCompanyId(UUID orderId, UUID companyId);
 
     @Query(nativeQuery = true, value = "select count(distinct o.id)         as totalOrders,\n" +
             "       count(distinct w.id)         as toalWashers,\n" +

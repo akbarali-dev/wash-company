@@ -2,10 +2,12 @@ package com.example.washer.service;
 
 
 import com.example.washer.dto.ChangePasswordDto;
+import com.example.washer.dto.RegisterUserDto;
 import com.example.washer.dto.UserDto;
 import com.example.washer.model.Role;
 import com.example.washer.model.User;
 import com.example.washer.payload.ApiResponse;
+import com.example.washer.repository.RoleRepository;
 import com.example.washer.repository.UserRepository;
 import com.example.washer.security.JWTProvider;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +38,7 @@ public class UserService implements UserDetailsService {
     private final AnswerService answerService;
     private final PasswordEncoder passwordEncoder;
     private final JWTProvider jwtProvider;
+    private final RoleRepository roleRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -86,6 +89,25 @@ public class UserService implements UserDetailsService {
         }
         String generatedToken = jwtProvider.generateToken(userDetails.getUsername());
         return answerService.answer("success", true, generatedToken, HttpStatus.OK);
+    }
+
+    public HttpEntity<ApiResponse> register(RegisterUserDto loginUser) {
+        final boolean hasUser = userRepository.existsByUsername(loginUser.getLogin());
+        if (hasUser) {
+            return answerService.answer("This [ " + loginUser.getLogin() + " ] username already exist", false, null, HttpStatus.ALREADY_REPORTED);
+        }
+        final Optional<Role> userRole = roleRepository.findByName("ROLE_USER");
+        Set<Role> roles = new HashSet<>();
+        roles.add(userRole.get());
+        final String encode = passwordEncoder.encode(loginUser.getPassword());
+        final User save = userRepository.save(new User(loginUser.getLogin(), loginUser.getName(),  encode, roles));
+        UserDetails userDetails = loadUserByUsername(loginUser.getLogin());
+        if (userDetails == null) {
+            return answerService.answer("error", false, null, HttpStatus.CONFLICT);
+        }
+        String generatedToken = jwtProvider.generateToken(userDetails.getUsername());
+        return answerService.answer("success", true, generatedToken, HttpStatus.OK);
+
     }
 }
 

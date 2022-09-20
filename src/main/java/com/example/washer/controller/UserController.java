@@ -20,4 +20,6 @@ public class UserController {
     public HttpEntity<ApiResponse> changePassword(@RequestBody ChangePasswordDto changePasswordDto) {
         return userService.changePassword(changePasswordDto);
     }
+
+
 }

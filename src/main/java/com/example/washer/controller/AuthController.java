@@ -1,5 +1,6 @@
 package com.example.washer.controller;
 
+import com.example.washer.dto.RegisterUserDto;
 import com.example.washer.dto.UserDto;
 import com.example.washer.payload.ApiResponse;
 import com.example.washer.security.JWTProvider;
@@ -32,5 +33,10 @@ public class AuthController {
 //        UserDetails userDetails = userService.loadUserByUsername(userDto.getUsername());
 //        String generatedToken = jwtProvider.generateToken(userDetails.getUsername());
 //        return ResponseEntity.ok(generatedToken);
+    }
+
+    @PostMapping("/signUp")
+    public HttpEntity<ApiResponse> register(@RequestBody RegisterUserDto userDto) {
+        return userService.register(userDto);
     }
 }

@@ -25,6 +25,7 @@ public class User extends AbsEntity implements UserDetails {
 
     @Column(unique = true)
     private String username;
+    private String name;
     private String password;
     @ManyToMany
     @JoinColumn(name = "wash_company_id")
@@ -37,7 +38,8 @@ public class User extends AbsEntity implements UserDetails {
     private Set<Role> roles;
 
 
-    public User(String username, String password, Set<Role> roles) {
+    public User(String username, String name, String password, Set<Role> roles) {
+        this.name = name;
         this.username = username;
         this.password = password;
         this.roles = roles;
