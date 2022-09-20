@@ -1,10 +1,11 @@
 package com.example.washer.service;
 
-import com.example.washer.service.AnswerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.Errors;
 import org.springframework.web.multipart.MultipartFile;
 import com.example.washer.dto.WashCompanyDto;
 import com.example.washer.model.WashCompany;
@@ -20,7 +21,9 @@ public class WashCompanyService {
     private final WashCompanyRepository washCompanyRepository;
     private final AnswerService answerService;
 
-    public HttpEntity<ApiResponse> saveNewWashCompany(WashCompanyDto washCompanyDto, MultipartFile multipartFile) {
+    public HttpEntity<ApiResponse> saveNewWashCompany(WashCompanyDto washCompanyDto, MultipartFile multipartFile, Errors errors) {
+        final ResponseEntity<ApiResponse> error = answerService.getError(errors);
+        if (error!=null) return error;
         try {
             final byte[] avatar = multipartFile.getBytes();
             try {

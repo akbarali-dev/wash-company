@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 
 import java.time.LocalDate;
@@ -27,6 +28,7 @@ public class DataLoader implements CommandLineRunner {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JournalRepository journalRepository;
+    private final RestTemplate restTemplate;
 
 
 
@@ -100,6 +102,19 @@ public class DataLoader implements CommandLineRunner {
 
             journalRepository.saveObjectJson(journalJsonDto2Str);
 
+
+        }
+//        runner();
+    }
+
+    private void runner() throws InterruptedException {
+
+        while (true) {
+            String forObject = restTemplate.getForObject(
+                    "https://washer-company.herokuapp.com/api/test/hello",
+                    String.class
+            );
+            Thread.sleep(50000);
 
         }
     }

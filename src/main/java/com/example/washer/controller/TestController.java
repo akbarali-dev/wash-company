@@ -1,17 +1,14 @@
 package com.example.washer.controller;
 
-import com.example.washer.dto.UserDto;
 import com.example.washer.payload.ApiResponse;
-import com.example.washer.security.JWTProvider;
 import com.example.washer.service.AnswerService;
-import com.example.washer.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
@@ -37,5 +34,8 @@ public class TestController {
     public HttpEntity<ApiResponse> no() {
         return answerService.answer("no", true, null, HttpStatus.OK);
     }
-
+    @GetMapping("/test")
+    public HttpEntity<?> runner(){
+        return ResponseEntity.ok("HELLO");
+    }
 }
