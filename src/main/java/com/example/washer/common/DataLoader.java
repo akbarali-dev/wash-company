@@ -104,7 +104,7 @@ public class DataLoader implements CommandLineRunner {
 
 
         }
-        runner();
+//        runner();
     }
 
     private void runner() throws InterruptedException {
